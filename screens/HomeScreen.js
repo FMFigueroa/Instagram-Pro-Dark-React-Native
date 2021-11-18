@@ -1,18 +1,31 @@
-import React, {useState} from 'react';
-import {View, Text, SafeAreaView, StyleSheet, ScrollView} from 'react-native';
-import Header from '../components/home/Header';
-import Stories from '../components/home/Stories';
-import Post from '../components/home/Post';
-import {POSTS} from '../data/posts';
-import BottomTabs, {bottomTabIcons} from '../components/home/BottomTabs';
-import {Divider} from 'react-native-elements';
+import React, { useEffect } from "react";
+import { View, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import Header from "../components/home/Header";
+import Stories from "../components/home/Stories";
+import Post from "../components/home/Post";
+import { POSTS } from "../data/posts";
+import BottomTabs, { bottomTabIcons } from "../components/home/BottomTabs";
+import { Divider } from "react-native-elements";
+import { db } from "../firebase";
+import { collectionGroup, query, where, getDocs } from "firebase/firestore";
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
+  useEffect(() => {
+    const getPosts = async () => {
+      const post = query(collectionGroup(db, "posts"));
+      const querySnapshot = await getDocs(post);
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+      });
+    };
+    getPosts();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} />
       {/* <DynamicDivider /> */}
-      <ScrollView >
+      <ScrollView>
         <Stories />
         <Divider Width={1} orientation="horizontal" />
         {POSTS.map((post, index) => (
@@ -36,7 +49,7 @@ const HomeScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
     flex: 1,
   },
 });
