@@ -15,7 +15,7 @@ import Validator from "email-validator";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../firebase";
-import { collection, setDoc,doc} from "firebase/firestore"; // Agrega un documento y una colección
+import { setDoc,doc} from "firebase/firestore"; // Agrega un documento y una colección
 
 const SignUpForm = ({ navigation }) => {
   const LoginFormSchema = Yup.object().shape({

@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {View, Image, TextInput, Button,Text} from 'react-native';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
 import {Divider} from 'react-native-elements';
 import validUrl from 'valid-url';
+import {db, auth} from '../../firebase';
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 const PLACEHOLDER_IMG =
   'https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Instagram_colored_svg_1-512.png';
@@ -15,6 +17,19 @@ const uploadPostSchema = Yup.object().shape({
 
 const FormikPostUploader = ({navigation}) => {
   const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDER_IMG);
+  const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null);
+
+
+  useEffect(() => {
+    
+    const getCurrentUser =  () => {
+      
+      console.log();
+    };
+    getCurrentUser();
+  
+  }, []);
+  
 
   return (
     <Formik
