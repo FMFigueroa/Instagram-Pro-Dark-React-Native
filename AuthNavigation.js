@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
 import { SignedInSatck, SignedOutStack } from "./navigation";
 
 import { onAuthStateChanged } from "firebase/auth";
@@ -13,7 +12,6 @@ const AuthNavigation = () => {
   };
   useEffect(() => {
     onAuthStateChanged(auth, (user) => userHandler(user));
-    console.log("currentUser", currentUser);
   }, []);
 
   return <>{currentUser ? <SignedInSatck /> : <SignedOutStack />}</>;

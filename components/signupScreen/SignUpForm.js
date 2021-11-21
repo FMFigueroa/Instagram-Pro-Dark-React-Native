@@ -15,7 +15,7 @@ import Validator from "email-validator";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../firebase";
-import { setDoc,doc} from "firebase/firestore"; // Agrega un documento y una colección
+import { setDoc,doc, collection} from "firebase/firestore"; // Agrega un documento y una colección
 
 const SignUpForm = ({ navigation }) => {
   const LoginFormSchema = Yup.object().shape({
@@ -28,7 +28,7 @@ const SignUpForm = ({ navigation }) => {
 
   /* conect API for Avatar Random */
   const getRandomProfilePicture = async () => {
-    const response = await fetch("https://randomuser.me/api/");
+    const response = await  fetch ("https://randomuser.me/api/");
     const data = await response.json();
     return data.results[0].picture.large;
   };
@@ -41,7 +41,8 @@ const SignUpForm = ({ navigation }) => {
         email,
         password
       );
-      await setDoc(doc(db, "users", authUser.user.email) ,{
+      const users = collection(db, "users");
+      await setDoc(doc(users, authUser.user.email),{
         avatar: await getRandomProfilePicture(),
         email: authUser.user.email,
         owner_uid: authUser.user.uid,

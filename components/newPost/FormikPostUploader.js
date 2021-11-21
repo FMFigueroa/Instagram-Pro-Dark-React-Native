@@ -1,71 +1,119 @@
-import React, {useState,useEffect} from 'react';
-import {View, Image, TextInput, Button,Text} from 'react-native';
-import * as Yup from 'yup';
-import {Formik} from 'formik';
-import {Divider} from 'react-native-elements';
-import validUrl from 'valid-url';
-import {db, auth} from '../../firebase';
-import { collection, query, where, getDocs } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { View, Image, TextInput, Button, Text } from "react-native";
+import * as Yup from "yup";
+import { Formik } from "formik";
+import { Divider } from "react-native-elements";
+import validUrl from "valid-url";
+import { db, auth } from "../../firebase";
+import {
+  collection,
+  query,
+  where,
+  getDoc,
+  doc,
+  onSnapshot,
+  limit,
+  collectionGroup,
+  serverTimestamp,
+  addDoc,
+  collectionReference,
+  setDoc,
+} from "firebase/firestore";
 
 const PLACEHOLDER_IMG =
-  'https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Instagram_colored_svg_1-512.png';
+  "https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Instagram_colored_svg_1-512.png";
 
 const uploadPostSchema = Yup.object().shape({
-  imageURL: Yup.string().url().required('A URL is Required'),
-  caption: Yup.string().max(2200, 'Caption has reached the character limit.'),
+  imageURL: Yup.string().url().required("A URL is Required"),
+  caption: Yup.string().max(2200, "Caption has reached the character limit."),
 });
 
-const FormikPostUploader = ({navigation}) => {
+const FormikPostUploader = ({ navigation }) => {
   const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDER_IMG);
   const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null);
 
-
+  const getUsername = () => {
+    const user = auth.currentUser;
+    const users = collection(db, "users");
+    const q = query(users, where("owner_uid", "==", user.uid), limit(1));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      querySnapshot.docs.map((doc) => {
+        setCurrentLoggedInUser({
+          username: doc.data().username,
+          avatar: doc.data().avatar,
+        });
+      });
+    });
+    /* return unsubscribe; */
+  };
   useEffect(() => {
-    
-    const getCurrentUser =  () => {
-      
-      console.log();
-    };
-    getCurrentUser();
-  
+    getUsername();
   }, []);
-  
+
+  const upLoadPostToFirebase = async (imageURL, caption) => {
+    const docRef = collection(db, "users", auth.currentUser.email, "posts"); 
+    const newpost = await addDoc(docRef, {
+        imageURL: imageURL,
+        caption: caption,
+        owner_uid: auth.currentUser.uid,
+        user: currentLoggedInUser.username,
+        avatar: currentLoggedInUser.avatar,
+        timestamp: serverTimestamp(),
+        likes: 0,
+        likes_by_users: [],
+        comments_by_users: [],
+      }
+    ).then(() => {
+      console.log("Your post was submitted successfully");
+      navigation.goBack();
+    });
+    /* return newpost; */
+  };
 
   return (
     <Formik
-      initialValues={{caption: '', imageURL: ''}}
-      onSubmit={values => {
-        console.log(values)
-        console.log('Your post was submitted successfully')
-        navigation.goBack()
+      initialValues={{ caption: "", imageURL: "" }}
+      onSubmit={(values) => {
+        upLoadPostToFirebase(values.caption, values.imageURL);
       }}
       validationSchema={uploadPostSchema}
       validateOnMount={true}
-      >
-          
-      {({handleBlur, handleChange, handleSubmit, values, errors, isValid}) => (
+    >
+      {({
+        handleBlur,
+        handleChange,
+        handleSubmit,
+        values,
+        errors,
+        isValid,
+      }) => (
         <>
           <View
             style={{
               margin: 20,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
             <Image
-              source={{uri: validUrl.isUri(thumbnailUrl)  ? thumbnailUrl: PLACEHOLDER_IMG}}
-              style={{width: 80, height: 80}}
+              source={{
+                uri: validUrl.isUri(thumbnailUrl)
+                  ? thumbnailUrl
+                  : PLACEHOLDER_IMG,
+              }}
+              style={{ width: 80, height: 80 }}
             />
-            <View style={{flex:1, marginLeft:12}}>
+            <View style={{ flex: 1, marginLeft: 12 }}>
               <TextInput
                 style={{
-                  color: 'white',
+                  color: "white",
                   fontSize: 18,
                 }}
                 placeholderTextColor="gray"
                 placeholder="Write a caption..."
                 multiline={true}
-                onChangeText={handleChange('caption')}
-                onBlur={handleBlur('caption')}
+                onChangeText={handleChange("caption")}
+                onBlur={handleBlur("caption")}
                 value={values.caption}
               />
             </View>
@@ -73,19 +121,19 @@ const FormikPostUploader = ({navigation}) => {
           <Divider width={0.2} orientation="vertical" />
           <TextInput
             onChange={(e) => setThumbnailUrl(e.nativeEvent.text)}
-            style={{color: 'white', fontSize: 14}}
+            style={{ color: "white", fontSize: 14 }}
             placeholderTextColor="gray"
             placeholder="Enter Image Url"
-            onChangeText={handleChange('imageURL')}
-            onBlur={handleBlur('imageURL')}
+            onChangeText={handleChange("imageURL")}
+            onBlur={handleBlur("imageURL")}
             value={values.imageURL}
           />
           {errors.imageURL && (
-              <Text style={{fontSize:10, color:'red'}}>
-                  {errors.imageURL}
-              </Text>
+            <Text style={{ fontSize: 10, color: "red" }}>
+              {errors.imageURL}
+            </Text>
           )}
-          <Button onPress={handleSubmit} title='Share' disabled={ !isValid } />
+          <Button onPress={handleSubmit} title="Share" disabled={!isValid} />
         </>
       )}
     </Formik>

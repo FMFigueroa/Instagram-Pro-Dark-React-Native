@@ -6,18 +6,26 @@ import Post from "../components/home/Post";
 import { POSTS } from "../data/posts";
 import BottomTabs, { bottomTabIcons } from "../components/home/BottomTabs";
 import { Divider } from "react-native-elements";
-import { db } from "../firebase";
-import { collectionGroup, query, where, getDocs } from "firebase/firestore";
+import {db} from "../firebase";
+import {
+  collectionGroup,
+  query,
+  onSnapshot,
+} from "firebase/firestore";
 
 const HomeScreen = ({ navigation }) => {
-  useEffect(() => {
-    const getPosts = async () => {
-      const post = query(collectionGroup(db, "posts"));
-      const querySnapshot = await getDocs(post);
-      querySnapshot.forEach((doc) => {
+  
+  const getPosts = () => {
+    const q = query(collectionGroup(db, "posts" ));
+    const posts = onSnapshot(q, (querySnapshot) => {
+      querySnapshot.docs.map((doc) => {
         console.log(doc.id, " => ", doc.data());
+        console.log("**=========================================================================**")       
       });
-    };
+    });
+  };
+
+  useEffect(() => {
     getPosts();
   }, []);
 
