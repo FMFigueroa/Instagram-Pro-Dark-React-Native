@@ -70,8 +70,8 @@ const LoginForm = ({ navigation }) => {
               ]}
             >
               <TextInput
-                placeholderTextColor="#444"
-                placeholder="Phone number, username or email"
+                placeholderTextColor="#a6a6a6"
+                placeholder="Enter your email"
                 autoCapitalize="none"
                 keyboardType="email-address"
                 textContentType="emailAddress"
@@ -94,7 +94,7 @@ const LoginForm = ({ navigation }) => {
               ]}
             >
               <TextInput
-                placeholderTextColor="#444"
+                placeholderTextColor="#a6a6a6"
                 placeholder="Password"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -120,7 +120,7 @@ const LoginForm = ({ navigation }) => {
             </Pressable>
 
             <View style={styles.signupContainer}>
-              <Text>Dont have an account?</Text>
+              <Text style = {{color:'white'}}>Dont have an account?</Text>
               <TouchableOpacity onPress={() => navigation.push("SignUpScreen")}>
                 <Text style={styles.textLink}>Sign Up</Text>
               </TouchableOpacity>
@@ -134,7 +134,7 @@ const LoginForm = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginTop: 80,
+    marginTop: 40,
     marginHorizontal: 10,
   },
   inputField: {
@@ -158,9 +158,10 @@ const styles = StyleSheet.create({
   },
   textLink: {
     alignSelf: "flex-end",
-    color: "#6BB0F5",
+    color: "#66b3ff",
     marginBottom: 20,
     marginLeft: 10,
+    fontWeight: "bold",
   },
   signupContainer: {
     flexDirection: "row",
