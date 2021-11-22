@@ -9,22 +9,17 @@ import {
   collection,
   query,
   where,
-  getDoc,
-  doc,
   onSnapshot,
   limit,
-  collectionGroup,
   serverTimestamp,
   addDoc,
-  collectionReference,
-  setDoc,
 } from "firebase/firestore";
 
 const PLACEHOLDER_IMG =
   "https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Instagram_colored_svg_1-512.png";
 
 const uploadPostSchema = Yup.object().shape({
-  imageURL: Yup.string().url().required("A URL is Required"),
+  imageUrl: Yup.string().url().required("A URL is Required"),
   caption: Yup.string().max(2200, "Caption has reached the character limit."),
 });
 
@@ -44,37 +39,37 @@ const FormikPostUploader = ({ navigation }) => {
         });
       });
     });
-    /* return unsubscribe; */
+    return unsubscribe;
   };
   useEffect(() => {
     getUsername();
   }, []);
 
-  const upLoadPostToFirebase = async (imageURL, caption) => {
-    const docRef = collection(db, "users", auth.currentUser.email, "posts"); 
-    const newpost = await addDoc(docRef, {
-        imageURL: imageURL,
-        caption: caption,
-        owner_uid: auth.currentUser.uid,
-        user: currentLoggedInUser.username,
-        avatar: currentLoggedInUser.avatar,
-        timestamp: serverTimestamp(),
-        likes: 0,
-        likes_by_users: [],
-        comments_by_users: [],
-      }
-    ).then(() => {
-      console.log("Your post was submitted successfully");
+  const upLoadPostToFirebase = async (imageUrl, caption) => {
+    const docRef = collection(db, "users", auth.currentUser.email, "posts",);
+    const unsubscribe = await addDoc(docRef, {
+      owner_uid: auth.currentUser.uid,
+      user: currentLoggedInUser.username,
+      owner_email: auth.currentUser.email,
+      avatar: currentLoggedInUser.avatar,
+      caption: caption,
+      imageUrl: imageUrl,
+      timestamp: serverTimestamp(),
+      likes: 0,
+      likes_by_users: [],
+      comments: [],
+    }).then(() => {
+      console.log("Your post was submitted successfully ✅");
       navigation.goBack();
     });
-    /* return newpost; */
+    return unsubscribe;
   };
 
   return (
     <Formik
-      initialValues={{ caption: "", imageURL: "" }}
+      initialValues={{ caption: "", imageUrl: "" }}
       onSubmit={(values) => {
-        upLoadPostToFirebase(values.caption, values.imageURL);
+        upLoadPostToFirebase(values.imageUrl, values.caption);
       }}
       validationSchema={uploadPostSchema}
       validateOnMount={true}
@@ -124,13 +119,13 @@ const FormikPostUploader = ({ navigation }) => {
             style={{ color: "white", fontSize: 14 }}
             placeholderTextColor="gray"
             placeholder="Enter Image Url"
-            onChangeText={handleChange("imageURL")}
-            onBlur={handleBlur("imageURL")}
-            value={values.imageURL}
+            onChangeText={handleChange("imageUrl")}
+            onBlur={handleBlur("imageUrl")}
+            value={values.imageUrl}
           />
-          {errors.imageURL && (
+          {errors.imageUrl && (
             <Text style={{ fontSize: 10, color: "red" }}>
-              {errors.imageURL}
+              {errors.imageUrl}
             </Text>
           )}
           <Button onPress={handleSubmit} title="Share" disabled={!isValid} />

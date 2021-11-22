@@ -33,7 +33,7 @@ const SignUpForm = ({ navigation }) => {
     return data.results[0].picture.large;
   };
 
-  /* Firebase 9 */
+  /* SignUp with Firebase 9 */
   const onSignUp = async (email, username, password) => {
     try {
       const authUser = await createUserWithEmailAndPassword(

@@ -9,7 +9,7 @@ const handleSignout = async () => {
   try {
     await signOut(auth).then(() => {
     Alert.alert('⚠ Signout', '\n\n ✅Logout Sucessful', [
-    { text: 'OK', onPress: () => console.log('OK Pressed') }, 
+    { text: 'OK', onPress: () => console.log('✅Logout Sucessful') }, 
     ])
     }); 
   } catch (error) {

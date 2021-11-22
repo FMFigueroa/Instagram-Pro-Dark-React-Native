@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import Header from "../components/home/Header";
 import Stories from "../components/home/Stories";
@@ -11,19 +11,30 @@ import {
   collectionGroup,
   query,
   onSnapshot,
+  orderBy, 
 } from "firebase/firestore";
 
 const HomeScreen = ({ navigation }) => {
   
+  /* const DynamicDivider = () => {
+  const [activeScroll, setActiveScroll] = useState(false);
+  return (
+    <View>
+      <Divider Width={1} orientation="horizontal" />
+    </View>
+  );
+  }; */
+
+  const [posts, setPosts] = useState([]);
+
+  // get posts from firebase db
   const getPosts = () => {
     const q = query(collectionGroup(db, "posts" ));
-    const posts = onSnapshot(q, (querySnapshot) => {
-      querySnapshot.docs.map((doc) => {
-        console.log(doc.id, " => ", doc.data());
-        console.log("**=========================================================================**")       
+    const getPostsSnapshot = onSnapshot(q, (querySnapshot) => {
+      setPosts(querySnapshot.docs.map( post => ({ id: post.id, ...post.data()})));      
       });
-    });
-  };
+    };
+  
 
   useEffect(() => {
     getPosts();
@@ -36,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
       <ScrollView>
         <Stories />
         <Divider Width={1} orientation="horizontal" />
-        {POSTS.map((post, index) => (
+        {posts.map((post, index) => (
           <Post post={post} key={index} />
         ))}
       </ScrollView>
@@ -44,16 +55,6 @@ const HomeScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
-/* const DynamicDivider = () => {
-  const [activeScroll, setActiveScroll] = useState(false);
-
-  return (
-    <View>
-      <Divider Width={1} orientation="horizontal" />
-    </View>
-  );
-}; */
 
 const styles = StyleSheet.create({
   container: {
