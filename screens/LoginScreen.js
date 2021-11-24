@@ -17,6 +17,7 @@ const LoginScreen = ({ navigation }) => (
   <LinearGradient
     colors={[
 <<<<<<< HEAD
+<<<<<<< HEAD
       "#000",
       "#8c8c8c",
       "#bfbfbf",
@@ -27,6 +28,8 @@ const LoginScreen = ({ navigation }) => (
       
 
 =======
+=======
+>>>>>>> acac71b971a9231adbd5b9370810426e278cd1c2
       "#ff1a8c",
       "#ff3399",
       "#ff80bf",
@@ -38,7 +41,10 @@ const LoginScreen = ({ navigation }) => (
       "#9933ff",
       "#400080",
       "#1a0033",
+<<<<<<< HEAD
 >>>>>>> refs/remotes/origin/main
+=======
+>>>>>>> acac71b971a9231adbd5b9370810426e278cd1c2
     ]}
     start={{ x: 1.0, y: 0.0 }}
     end={{ x: 1.0, y: 1.0 }}
@@ -81,18 +87,24 @@ const styles = StyleSheet.create({
   },
   titlefooter: {
 <<<<<<< HEAD
+<<<<<<< HEAD
     marginTop: 100,
     fontSize: 12,
     fontWeight: "bold",
     alignSelf: "center",
     color: "#0d0d0d",
 =======
+=======
+>>>>>>> acac71b971a9231adbd5b9370810426e278cd1c2
     margin: 10,
     fontSize: 10,
     fontWeight: "bold",
     alignSelf: "center",
     color: "#e6e6e6",
+<<<<<<< HEAD
 >>>>>>> refs/remotes/origin/main
+=======
+>>>>>>> acac71b971a9231adbd5b9370810426e278cd1c2
   },
 });
 export default LoginScreen;

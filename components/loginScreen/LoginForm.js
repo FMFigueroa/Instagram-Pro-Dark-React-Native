@@ -159,10 +159,14 @@ const styles = StyleSheet.create({
   textLink: {
     alignSelf: "flex-end",
 <<<<<<< HEAD
+<<<<<<< HEAD
     color: "#000",
 =======
     color: "#66b3ff",
 >>>>>>> refs/remotes/origin/main
+=======
+    color: "#66b3ff",
+>>>>>>> acac71b971a9231adbd5b9370810426e278cd1c2
     marginBottom: 20,
     marginLeft: 10,
     fontWeight: "bold",

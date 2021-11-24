@@ -17,7 +17,10 @@ const SignUpScreen = ({ navigation }) => (
   <LinearGradient
     colors={[
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> acac71b971a9231adbd5b9370810426e278cd1c2
       "#ff1a8c",
       "#ff3399",
       "#ff80bf",
@@ -25,7 +28,10 @@ const SignUpScreen = ({ navigation }) => (
       "#FFF",
       "#FFF",
       "#FFF",
+<<<<<<< HEAD
 >>>>>>> refs/remotes/origin/main
+=======
+>>>>>>> acac71b971a9231adbd5b9370810426e278cd1c2
       "#DDA0DD",
       "#9933ff",
       "#400080",
@@ -66,14 +72,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
 <<<<<<< HEAD
+<<<<<<< HEAD
     color: "#fff",
 =======
 >>>>>>> refs/remotes/origin/main
+=======
+>>>>>>> acac71b971a9231adbd5b9370810426e278cd1c2
   },
   subtitle: {
     fontSize: 18,
     fontWeight: "bold",
     alignSelf: "center",
+<<<<<<< HEAD
 <<<<<<< HEAD
     color: "#fff",
   },
@@ -84,6 +94,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "#a6a6a6",
 =======
+=======
+>>>>>>> acac71b971a9231adbd5b9370810426e278cd1c2
   },
   titlefooter: {
     margin: 10,
@@ -91,7 +103,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
     color: "#e6e6e6",
+<<<<<<< HEAD
 >>>>>>> refs/remotes/origin/main
+=======
+>>>>>>> acac71b971a9231adbd5b9370810426e278cd1c2
   },
 });
 export default SignUpScreen;
