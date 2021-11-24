@@ -82,13 +82,13 @@ const SignUpForm = ({ navigation }) => {
                 {
                   borderColor:
                     values.email.length < 1 || Validator.validate(values.email)
-                      ? "#ccc"
+                      ? "#400080"
                       : "red",
                 },
               ]}
             >
               <TextInput
-                placeholderTextColor="#444"
+                placeholderTextColor="#a6a6a6"
                 placeholder="Phone number, username or email"
                 autoCapitalize="none"
                 keyboardType="email-address"
@@ -106,13 +106,13 @@ const SignUpForm = ({ navigation }) => {
                 {
                   borderColor:
                     1 > values.username.length || values.username.length >= 2
-                      ? "#ccc"
+                      ? "#400080"
                       : "red",
                 },
               ]}
             >
               <TextInput
-                placeholderTextColor="#444"
+                placeholderTextColor="#a6a6a6"
                 placeholder="Username"
                 autoCapitalize="none"
                 textContentType="username"
@@ -128,13 +128,13 @@ const SignUpForm = ({ navigation }) => {
                 {
                   borderColor:
                     1 > values.password.length || values.password.length >= 8
-                      ? "#ccc"
+                      ? "#400080"
                       : "red",
                 },
               ]}
             >
               <TextInput
-                placeholderTextColor="#444"
+                placeholderTextColor="#a6a6a6"
                 placeholder="Password"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -160,7 +160,7 @@ const SignUpForm = ({ navigation }) => {
             </Pressable>
 
             <View style={styles.signupContainer}>
-              <Text>Have an account?</Text>
+              <Text style = {{color:'white'}}>Have an account?</Text>
               <TouchableOpacity onPress={() => navigation.push("LoginScreen")}>
                 <Text style={styles.textLink}>Log in</Text>
               </TouchableOpacity>
@@ -174,7 +174,7 @@ const SignUpForm = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginTop: 80,
+    marginTop: 40,
     marginHorizontal: 10,
   },
   inputField: {
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   signupContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 50,
+    marginTop: 15,
   },
 });
 

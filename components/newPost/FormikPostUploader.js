@@ -46,7 +46,7 @@ const FormikPostUploader = ({ navigation }) => {
   }, []);
 
   const upLoadPostToFirebase = async (imageUrl, caption) => {
-    const docRef = collection(db, "users", auth.currentUser.email, "posts",);
+    const docRef = collection(db, "users", auth.currentUser.email, "posts");
     const unsubscribe = await addDoc(docRef, {
       owner_uid: auth.currentUser.uid,
       user: currentLoggedInUser.username,
@@ -62,6 +62,7 @@ const FormikPostUploader = ({ navigation }) => {
       console.log("Your post was submitted successfully ✅");
       navigation.goBack();
     });
+
     return unsubscribe;
   };
 

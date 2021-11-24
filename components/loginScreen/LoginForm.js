@@ -64,14 +64,14 @@ const LoginForm = ({ navigation }) => {
                 {
                   borderColor:
                     values.email.length < 1 || Validator.validate(values.email)
-                      ? "#ccc"
+                      ? "#787878"
                       : "red",
                 },
               ]}
             >
               <TextInput
-                placeholderTextColor="#444"
-                placeholder="Phone number, username or email"
+                placeholderTextColor="#a6a6a6"
+                placeholder="Enter your email"
                 autoCapitalize="none"
                 keyboardType="email-address"
                 textContentType="emailAddress"
@@ -88,13 +88,13 @@ const LoginForm = ({ navigation }) => {
                 {
                   borderColor:
                     1 > values.password.length || values.password.length >= 8
-                      ? "#ccc"
+                      ? "#787878"
                       : "red",
                 },
               ]}
             >
               <TextInput
-                placeholderTextColor="#444"
+                placeholderTextColor="#a6a6a6"
                 placeholder="Password"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -120,7 +120,7 @@ const LoginForm = ({ navigation }) => {
             </Pressable>
 
             <View style={styles.signupContainer}>
-              <Text>Dont have an account?</Text>
+              <Text style = {{color:'white'}}>Dont have an account?</Text>
               <TouchableOpacity onPress={() => navigation.push("SignUpScreen")}>
                 <Text style={styles.textLink}>Sign Up</Text>
               </TouchableOpacity>
@@ -134,7 +134,7 @@ const LoginForm = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginTop: 80,
+    marginTop: 40,
     marginHorizontal: 10,
   },
   inputField: {
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   button: (isValid) => ({
-    backgroundColor: isValid ? "#0096F6" : "#9ACAF7",
+    backgroundColor: isValid ? "#000" : "#404040",
     alignItems: "center",
     justifyContent: "center",
     minHeight: 42,
@@ -158,9 +158,14 @@ const styles = StyleSheet.create({
   },
   textLink: {
     alignSelf: "flex-end",
-    color: "#6BB0F5",
+<<<<<<< HEAD
+    color: "#000",
+=======
+    color: "#66b3ff",
+>>>>>>> refs/remotes/origin/main
     marginBottom: 20,
     marginLeft: 10,
+    fontWeight: "bold",
   },
   signupContainer: {
     flexDirection: "row",

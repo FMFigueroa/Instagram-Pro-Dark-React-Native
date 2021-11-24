@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,35 +6,84 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-} from 'react-native';
-import {LinearGradient} from 'expo-linear-gradient';
-import {USERS} from '../../data/users';
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
-const Users = USERS.filter(USERS => USERS.id > 0);
+import { USERS } from "../../data/users";
+
+import { db, auth } from "../../firebase";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  limit,
+} from "firebase/firestore";
+
+
+const UsersStories = USERS.filter((USERS) => USERS.id > 0);
 
 const Stories = () => {
+
+  const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null);
+
+  const getUsername = () => {
+    const user = auth.currentUser;
+    const users = collection(db, "users");
+    const q = query(users, where("owner_uid", "==", user.uid), limit(1));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      querySnapshot.docs.map((doc) => {
+        setCurrentLoggedInUser(doc.data().avatar);
+      });
+    });
+  };
+
+  useEffect(() => {
+    getUsername();
+  }, []);
+
+  const User = () => (
+    <View style={Styles.containerStoryUser}>
+      <TouchableOpacity>
+        <Image source={{ uri:currentLoggedInUser}} style={Styles.user} />
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <View style={Styles.postBadge}></View>
+        <Image
+          style={Styles.icon}
+          source={{
+            uri: "https://img.icons8.com/fluency/48/000000/add.png",
+          }}
+        />
+      </TouchableOpacity>
+      <View style={Styles.containerUser}>
+        <Text style={Styles.userStory}>Your Story</Text>
+      </View>
+    </View>
+  );
+
   return (
     <View style={Styles.container}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <User/>
-        {Users.map((story, index) => (
-          <View key={index} style={{width: 80, marginLeft: 5}}>
-
+        <User />
+        {UsersStories.map((story, index) => (
+          <View key={index} style={{ width: 80, marginLeft: 13 }}>
             <LinearGradient
               colors={[
-                '#FF1493',
-                '#FF63b4',
-                '#FFB6C1',
-                '#FFA07A',
-                '#FF7F50',
-                '#FF4500',
+                "#FF1493",
+                "#FF63b4",
+                "#FFB6C1",
+                "#FFA07A",
+                "#FF7F50",
+                "#FF4500",
               ]}
-              start={{x: 1.0, y: 0.0}}
-              end={{x: 1.0, y: 1.0}}
-              style={Styles.grediant}>
+              start={{ x: 1.0, y: 0.0 }}
+              end={{ x: 1.0, y: 1.0 }}
+              style={Styles.grediant}
+            >
               <View style={Styles.storyContainer}>
                 <TouchableOpacity>
-                  <Image source={{uri: story.image}} style={Styles.story} />
+                  <Image source={{ uri: story.image }} style={Styles.story} />
                 </TouchableOpacity>
               </View>
             </LinearGradient>
@@ -42,7 +91,7 @@ const Stories = () => {
             <View style={Styles.containerUsers}>
               <Text style={Styles.usersStory}>
                 {story.user.length > 11
-                  ? story.user.slice(0, 10).toLocaleLowerCase() + '...'
+                  ? story.user.slice(0, 10).toLocaleLowerCase() + "..."
                   : story.user.toLocaleLowerCase()}
               </Text>
             </View>
@@ -53,30 +102,6 @@ const Stories = () => {
   );
 };
 
-const User = () => (
-  <View style={Styles.containerStoryUser}>
-  <TouchableOpacity>
-    <Image
-      source={{
-        uri: USERS[0].image,
-      }}
-      style={Styles.user}
-    />
-  </TouchableOpacity>
-  <TouchableOpacity>
-    <View style={Styles.postBadge}></View>
-    <Image
-      style={Styles.icon}
-      source={{
-        uri: 'https://img.icons8.com/fluency/48/000000/add.png',
-      }}
-    />
-  </TouchableOpacity>
-  <View style={Styles.containerUser}>
-    <Text style={Styles.userStory}>Your Story</Text>
-  </View>
-</View>
-);
 const Styles = StyleSheet.create({
   container: {
     marginBottom: 10,
@@ -85,74 +110,73 @@ const Styles = StyleSheet.create({
     height: 75,
     width: 75,
     borderRadius: 50,
-    justifyContent: 'center',
-    alignSelf: 'center',
+    justifyContent: "center",
+    alignSelf: "center",
   },
   storyContainer: {
     flex: 1.0,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    width: '93%',
+    alignSelf: "center",
+    justifyContent: "center",
+    width: "93%",
     borderRadius: 50,
     margin: 2,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   story: {
     width: 63,
     height: 63,
     borderRadius: 50,
-    alignSelf: 'center',
-    justifyContent: 'center',
+    alignSelf: "center",
+    justifyContent: "center",
   },
   containerUsers: {
     marginTop: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   usersStory: {
-    color: 'white',
+    color: "white",
     fontSize: 11,
   },
   containerStoryUser: {
     width: 80,
     marginLeft: 15,
     marginHorizontal: 6,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   user: {
     height: 68,
     width: 68,
     borderRadius: 50,
-    alignSelf: 'center',
-    justifyContent: 'center',
+    alignSelf: "center",
+    justifyContent: "center",
   },
   containerUser: {
     marginTop: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   userStory: {
-    color: 'white',
+    color: "white",
     fontSize: 11,
   },
   postBadge: {
-    backgroundColor: '#000000',
+    backgroundColor: "#000000",
     borderRadius: 50,
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 52,
     width: 19,
     height: 19,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   icon: {
     width: 18,
     height: 18,
-    resizeMode: 'contain',
-    position: 'absolute',
+    resizeMode: "contain",
+    position: "absolute",
     bottom: 0,
     left: 53,
     zIndex: 100,
-    
   },
 });
 export default Stories;
